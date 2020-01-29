@@ -1,33 +1,58 @@
 import React, {useState} from 'react'
 import gql from 'graphql-tag'
-import PetBox from '../components/PetBox'
-import NewPet from '../components/NewPet'
 import { useQuery, useMutation } from '@apollo/react-hooks'
+import PetsList from '../components/PetsList'
+import NewPetModal from '../components/NewPetModal'
 import Loader from '../components/Loader'
+
+const ALL_PETS_QUERY = gql`
+    query AllPets {
+        pets {
+          name
+          id
+          type
+          img
+        }
+    }
+  `
+const ADD_PET_MUTATION = gql`
+  mutation CreatePet($newPet: NewPetInput!) {
+    addPet(input: $newPet) {
+      id
+      name
+      type
+      img
+    }
+  }
+` 
 
 export default function Pets () {
   const [modal, setModal] = useState(false)
-  
-  const onSubmit = input => {
-    setModal(false)
-  }
+  const {data, loading, error} = useQuery(ALL_PETS_QUERY)
+  const [createPet, newPet] = useMutation(ADD_PET_MUTATION, {
+    update(cache, { data:  { addPet }}) {
+      const { pets } = cache.readQuery({query: ALL_PETS_QUERY})
+      cache.writeQuery({query: ALL_PETS_QUERY, data: {pets: [...pets, addPet]} })
+    }
+  })
 
-  const petsList = pets.data.pets.map(pet => (
-    <div className="col-xs-12 col-md-4 col" key={pet.id}>
-      <div className="box">
-        <PetBox pet={pet} />
-      </div>
-    </div>
-  ))
+  const onSubmit = newPet => {
+    setModal(false);
+    createPet({
+      variables: {newPet}
+    })
+  }
   
   if (modal) {
-    return (
-      <div className="row center-xs">
-        <div className="col-xs-8">
-          <NewPet onSubmit={onSubmit} onCancel={() => setModal(false)}/>
-        </div>
-      </div>
-    )
+    return <NewPetModal onSubmit={onSubmit} onCancel={() => setModal(false)} />
+  }
+
+  if(loading || newPet.loading) {
+    return <Loader />
+  }
+
+  if(error || newPet.error) {
+    return <p>error</p>
   }
 
   return (
@@ -44,9 +69,7 @@ export default function Pets () {
         </div>
       </section>
       <section>
-        <div className="row">
-          {petsList}
-        </div>
+        <PetsList pets={data.pets}/>
       </section>
     </div>
   )

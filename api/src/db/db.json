@@ -3,5 +3,45 @@
     "id": "jBWMVGjm50l6LGwepDoty",
     "username": "frontendmaster"
   },
-  "pet": []
+  "pet": [
+    {
+      "id": "dsaasd1",
+      "type": "DOG",
+      "name": "DON",
+      "createdAt": "34567809"
+    },
+    {
+      "id": "dsaasd2",
+      "type": "CAT",
+      "name": "DONI",
+      "createdAt": "34567809"
+    },
+    {
+      "id": "dsaasd3",
+      "type": "DOG",
+      "name": "DONA",
+      "createdAt": "34567809"
+    },
+    {
+      "id": "0Iehm6l4nS6K2d6hlJt6t",
+      "createdAt": 1580251282497,
+      "name": "PUSSY",
+      "type": "CAT",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "3JwGnZIemrQ5Qu-y8zNqM",
+      "createdAt": 1580337132109,
+      "name": "test",
+      "type": "DOG",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    },
+    {
+      "id": "-jFPVhsOMuFM2JxGuUisq",
+      "createdAt": 1580338517021,
+      "name": "goose",
+      "type": "DOG",
+      "user": "jBWMVGjm50l6LGwepDoty"
+    }
+  ]
 }
